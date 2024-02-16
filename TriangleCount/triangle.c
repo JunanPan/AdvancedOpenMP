@@ -37,9 +37,6 @@ Description of algorithm:
 3. The algorithm iterates over the vertices, and for each vertex (y) with a number i, 
       the algorithm checks if there is a triangle (x, y, z) where 
         x has a smaller number than i, and z has a larger number than i.
-
-           
-
 */
 unsigned int count_triangles() {
   //this is the number of triangles
