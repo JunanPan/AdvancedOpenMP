@@ -116,7 +116,7 @@ int main(int argc, char **argv) {
     RDTSC(t0);
     x = count_triangles();
     RDTSC(t1);
-    printf("%u\n", x);
+    // printf("%u\n", x);
     sum1 += (COUNTER_DIFF(t1, t0, CYCLES));
   }
   
