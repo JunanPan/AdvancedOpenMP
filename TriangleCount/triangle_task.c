@@ -5,8 +5,7 @@
 
 unsigned int *IA;
 unsigned int *JA;
-unsigned int N;
-unsigned int NUM_A;
+
 
 void input() {
     unsigned int num_IA = N + 1;
@@ -77,14 +76,7 @@ unsigned int count_triangles() {
 }
 
 int main(int argc, char **argv) {
-    if (argc < 3) {
-        printf("Usage: %s <runs> <N> <NUM_A>\n", argv[0]);
-        return -1;
-    }
-
     int runs = atoi(argv[1]);
-    N = atoi(argv[2]);
-    NUM_A = atoi(argv[3]);
 
     tsc_counter t0, t1;
 
