@@ -3,6 +3,7 @@ all:
 	./affinity.x
 
 run:
+	export OMP_PROC_BIND=false; \
 	./affinity.x
 
 clean:
