@@ -1,30 +1,30 @@
 import matplotlib.pyplot as plt
 
-# Matrix sizes for reference
+# Matrix sizes
 sizes = [32, 64, 96, 128, 160, 192, 224, 256]
 
-# Base performance metrics from the latest experiment
-base_cores = [1952.92, 1875.14, 2735.26, 3915.74, 2379.72, 3386.54, 2282.52, 2799.14]
+# Baseline performance metrics
+original = [1968.64, 2098.52, 3740.96, 3426.6, 1913.44, 3507.6, 3712.32, 3414.24]
 
-# Performance metrics with OMP_PLACES=cores
-cores_true = [1605.36, 2053.24, 4542.78, 4269.34, 5138.56, 5523.94, 5315.54, 5192.08]
-cores_close = [1687.56, 2005.44, 4339.46, 4234.96, 4247.52, 6828.92, 5118.84, 6486.32]
-cores_spread = [1688.04, 1695.64, 2644.54, 2413.64, 5395.88, 3092.04, 2978.08, 2782.26]
+# Performance metrics for different OMP_PROC_BIND settings
+true_binding = [2343.3, 2238.0, 3742.92, 4927.06, 6461.86, 5198.7, 5049.06, 5073.12]
+close_binding = [1972.48, 1995.7, 3100.8, 4437.54, 4935.48, 5940.14, 4766.34, 3955.3]
+spread_binding = [1175.08, 2128.64, 1885.22, 2194.82, 2992.56, 2641.18, 3065.04, 3535.92]
 
-# Calculating the speedup of cores_true, cores_close, and cores_spread over the base_cores
-speedup_cores_true = [b/t for b, t in zip(base_cores, cores_true)]
-speedup_cores_close = [b/c for b, c in zip(base_cores, cores_close)]
-speedup_cores_spread = [b/s for b, s in zip(base_cores, cores_spread)]
+# Calculating speedup as the ratio of original performance to each setting's performance
+speedup_true = [o/t for o, t in zip(original, true_binding)]
+speedup_close = [o/c for o, c in zip(original, close_binding)]
+speedup_spread = [o/s for o, s in zip(original, spread_binding)]
 
-# Plotting the speedup for different OMP_PROC_BIND settings with OMP_PLACES=cores
+# Plotting
 plt.figure(figsize=(10, 6))
-plt.plot(sizes, speedup_cores_true, label='OMP_PROC_BIND=true', marker='o')
-plt.plot(sizes, speedup_cores_close, label='OMP_PROC_BIND=close', marker='o')
-plt.plot(sizes, speedup_cores_spread, label='OMP_PROC_BIND=spread', marker='o')
+plt.plot(sizes, speedup_true, label='True Binding', marker='o')
+plt.plot(sizes, speedup_close, label='Close Binding', marker='o')
+plt.plot(sizes, speedup_spread, label='Spread Binding', marker='o')
 
 plt.xlabel('Matrix Size')
-plt.ylabel('Speedup Over Base (OMP_PLACES=cores)')
-plt.title('Speedup of Different OMP_PROC_BIND Settings With OMP_PLACES=cores')
+plt.ylabel('Speedup Over Original')
+plt.title('Speedup of Different OMP_PROC_BIND Settings Over Original')
 plt.legend()
 plt.grid(True)
 plt.xticks(sizes)
