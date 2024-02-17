@@ -25,7 +25,7 @@ unsigned int count_triangles() {
     {
         #pragma omp single
         for(unsigned int i = 1; i<N-1; i++) {                    
-            #pragma omp task firstprivate(i) reduction(+:delta)
+            #pragma omp task firstprivate(i)
             {
                 unsigned int *curr_row_x = IA+i;
                 unsigned int *curr_row_A = IA+i+1;
