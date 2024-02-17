@@ -4,18 +4,18 @@ all:
 run:
 	./affinity.x
 
-run_true:
-	export OMP_PLACES=threads; \
+run_cores_true:
+	export OMP_PLACES=cores; \
 	export OMP_PROC_BIND=true; \
 	./affinity.x
 
-run_close:
-	export OMP_PLACES=threads; \
+run_cores_close:
+	export OMP_PLACES=cores; \
 	export OMP_PROC_BIND=close; \
 	./affinity.x
 
-run_spread:
-	export OMP_PLACES=threads; \
+run_cores_spread:
+	export OMP_PLACES=cores; \
 	export OMP_PROC_BIND=spread; \
 	./affinity.x
 
