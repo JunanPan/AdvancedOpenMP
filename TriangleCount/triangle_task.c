@@ -23,11 +23,11 @@ unsigned int count_triangles() {
 
   #pragma omp parallel
   {
-    #pragma omp single
+    #pragma omp sections
     {
       // The outer loop traverses over all possible vertices (y). The iteration starts with vertex #1
       for(unsigned int i = 1; i<N-1; i++) {                    
-        #pragma omp task firstprivate(i) shared(IA, JA) reduction(+:delta)
+        #pragma omp task firstprivate(i) shared(IA, JA) 
         {
           unsigned int *curr_row_x = IA+i;
           unsigned int *curr_row_A = IA+i+1;
