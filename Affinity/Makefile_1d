@@ -1,0 +1,23 @@
+all:
+	gcc -O2 affinity.c -o affinity.x -std=c99 -mfma -mavx -fopenmp
+
+run:
+	./affinity.x
+	
+run_sockets_true:
+	export OMP_PLACES=sockets; \
+	export OMP_PROC_BIND=true; \
+	./affinity.x
+
+run_sockets_close:
+	export OMP_PLACES=sockets; \
+	export OMP_PROC_BIND=close; \
+	./affinity.x
+
+run_sockets_spread:
+	export OMP_PLACES=sockets; \
+	export OMP_PROC_BIND=spread; \
+	./affinity.x
+
+clean:
+	rm -rf *~ *.x
