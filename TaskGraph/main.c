@@ -2,35 +2,40 @@
 #include <cstdlib>
 #include <iostream>
 #include <cmath>
-
 using namespace std;
 
 void test_routine(double* a, int N)
 {
-
-  for (int i = 0; i != N; ++i)
+  #pragma omp parallel
+  {
+    #pragma omp single
     {
-      a[i*N+i] = sqrt(a[i*N+i]);
+      for (int i = 0; i != N; ++i)
+      {
+        // Task for computing the square root of the diagonal element
+        #pragma omp task firstprivate(i) depend(inout: a[i*N+i])
+        a[i*N+i] = sqrt(a[i*N+i]);
 
-      for (int j = i+1; j <N; ++j)
-	{
-	  a[j*N+i] = a[j*N+i] / a[i*N+i];
-	}
+        for (int j = i+1; j < N; ++j)
+        {
+          // Task for computing the division of the lower triangular matrix elements
+          #pragma omp task firstprivate(i, j) depend(in: a[i*N+i]) depend(inout: a[j*N+i])
+          a[j*N+i] = a[j*N+i] / a[i*N+i];
+        }
 
-      
-      for (int j = i + 1; j < N; ++j)
-	{
-	  for (int k = i+1; k <= j; ++k)
-	    {
-	      a[j*N+k] -= a[j*N+i]*a[k*N+i];
-	    }
-	}
-      
+        for (int j = i + 1; j < N; ++j)
+        {
+          for (int k = i+1; k <= j; ++k)
+          {
+            // Task for computing the subtraction for the lower triangular matrix elements
+            #pragma omp task firstprivate(i, j, k) depend(in: a[j*N+i], a[k*N+i]) depend(inout: a[j*N+k])
+            a[j*N+k] -= a[j*N+i]*a[k*N+i];
+          }
+        }
+      }
     }
- 
+  }
 }
-
-
 
 int main()
 {
@@ -62,7 +67,6 @@ int main()
       correct &= (fabs(a[i*N+j] - b[i*N+j]) < 1e-7);
 
   cout<<(correct?"Yes":"No")<<endl;
-  
   free(a);
   free(b);  
   
